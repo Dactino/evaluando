@@ -3,8 +3,6 @@ import { useCallback, useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { type User } from "@supabase/supabase-js";
 
-import Image from "next/image";
-
 export default function AccountForm({ user }: { user: User | null }) {
   const supabase = createClient();
   const [loading, setLoading] = useState(true);
@@ -43,7 +41,6 @@ export default function AccountForm({ user }: { user: User | null }) {
   useEffect(() => {
     getProfile();
   }, [user, getProfile]);
-  console.log(avatar);
 
   async function updateProfile({
     last_name,
@@ -100,41 +97,55 @@ export default function AccountForm({ user }: { user: User | null }) {
   }
 
   return (
-    <div className="form-widget bg-white text-black">
-      <div>
-        <label htmlFor="email">Email</label>
-        <input id="email" type="text" value={user?.email} disabled />
+    <div className="form-widget bg-white text-black p-6 rounded-lg ">
+      <div className="mb-4">
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Email
+        </label>
+        <input
+          id="email"
+          type="text"
+          value={user?.email}
+          disabled
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
       </div>
-      <div>
-        <label htmlFor="firstName">Full Name</label>
+      <div className="mb-4">
+        <label
+          htmlFor="firstName"
+          className="block text-sm font-medium text-gray-700"
+        >
+          First Name
+        </label>
         <input
           id="firstName"
           type="text"
-          className="text-black"
-          value={firstname ? firstname : ""}
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          value={firstname || ""}
           onChange={(e) => setFirstname(e.target.value)}
         />
       </div>
-      <div>
-        <label htmlFor="last_name">Last Name</label>
+      <div className="mb-4">
+        <label
+          htmlFor="last_name"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Last Name
+        </label>
         <input
           id="last_name"
           type="text"
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           value={last_name || ""}
           onChange={(e) => setLastname(e.target.value)}
         />
       </div>
-      <Image
-        width="100"
-        height="100"
-        src={avatar || ""}
-        alt="Avatar"
-        className="avatar image"
-        style={{ height: 100, width: 100 }}
-      />
-      <div>
+      <div className="mb-4">
         <button
-          className="button primary block"
+          className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-secondary hover:bg-secondary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-secondary-600"
           onClick={() =>
             profile_created
               ? createProfile({ firstname, last_name, avatar })
@@ -145,10 +156,12 @@ export default function AccountForm({ user }: { user: User | null }) {
           {loading ? "Loading ..." : "Update"}
         </button>
       </div>
-
       <div>
         <form action="/auth/signout" method="post">
-          <button className="button block" type="submit">
+          <button
+            className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            type="submit"
+          >
             Sign out
           </button>
         </form>
